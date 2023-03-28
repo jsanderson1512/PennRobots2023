@@ -38,12 +38,42 @@ public class Robots_SendAListOfPoints : MonoBehaviour
         }
 
     }
-    public void SimulateListOfPoints()
+    
+    
+    
+    
+    
+    public void Toggle_SimulateListOfPoints()
     {
-        startSimulation = true;
-        newPoint = true;
-        currentPoint = 0;
+        if(startSimulation == true)
+        {
+            startSimulation = false; 
+        }
+        else
+        {
+            startSimulation = true;
+            newPoint = true;
+         
+        }
     }
+
+
+    public void StepBack()
+    {
+        currentPoint--;
+
+        robotTarget_WorldSpace.transform.position = listOfPointsParent.transform.GetChild(currentPoint).position;
+        robotTarget_WorldSpace.transform.rotation = listOfPointsParent.transform.GetChild(currentPoint).rotation;
+    }
+
+    public void StepForward()
+    {
+        currentPoint++;
+
+        robotTarget_WorldSpace.transform.position = listOfPointsParent.transform.GetChild(currentPoint).position;
+        robotTarget_WorldSpace.transform.rotation = listOfPointsParent.transform.GetChild(currentPoint).rotation;
+    }
+
     private void Update()
     {
         if (startSimulation)
@@ -74,6 +104,7 @@ public class Robots_SendAListOfPoints : MonoBehaviour
                 newPoint = true;
                 if (currentPoint > childCount-1)
                 {
+                    currentPoint = 0;
                     startSimulation = false;
                 }
             }
