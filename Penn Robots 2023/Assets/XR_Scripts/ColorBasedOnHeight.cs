@@ -5,27 +5,35 @@ using UnityEngine;
 public class ColorBasedOnHeight : MonoBehaviour
 {
     public Transform referencePlane;
-    public Transform sphereToColor;
+    public Transform pointParentToColor;
+    private MeshRenderer[] pointsToColor;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        pointsToColor = pointParentToColor.GetComponentsInChildren<MeshRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        float planeHeight = referencePlane.position.y;
-        float sphereHeight = sphereToColor.position.y;
 
-        if(sphereHeight<planeHeight)
+        for(int i = 0; i<pointsToColor.Length;i++)
         {
-            Material originalMat = sphereToColor.GetComponent<MeshRenderer>().material;
-            Color originalColor = originalMat.color;
-            originalColor.r = originalColor.r - 1;
+            float planeHeight = referencePlane.position.y;
+            float sphereHeight = pointsToColor[i].transform.position.y;
 
-            sphereToColor.GetComponent<MeshRenderer>().material.color = originalColor;
+            if (sphereHeight < planeHeight)
+            {
+                Material originalMat = pointsToColor[i].GetComponent<MeshRenderer>().material;
+                Color originalColor = originalMat.color;
+                originalColor.r = originalColor.r - 0.01f;
+
+                pointsToColor[i].GetComponent<MeshRenderer>().material.color = originalColor;
+            }
         }
+
+       
     }
 }
